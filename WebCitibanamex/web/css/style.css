@@ -1,0 +1,115 @@
+
+/* 
+    Created on : 16 may. 2023, 12:08:08
+    Author     : carlossanchez
+*/
+
+/* ----- login ----- */
+
+body {
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.divContainer {
+    background-color: #004A99;
+    border-radius: 35px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 70px auto;
+    height: 480px;
+    width: 480px;
+}
+
+h1 {
+    text-align: center;
+    padding-top: 30px;
+    margin-bottom: 60px;
+    font-size: 40px;
+    color: white;
+}
+
+form{
+    padding: 0 30px;
+    padding-top: 40px;
+}
+
+.divImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+    background-size: cover;
+}
+
+.input-login {
+    border: none;
+    border-radius: 50px;
+    box-sizing: border-box;
+    display: block;
+    margin-bottom: 40px;
+    padding: 25px;
+    height: 70px;
+    width: 100%;
+    background-color: #ffffff;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    outline: none;
+    transition-property: border;
+    transition-duration: 0.3s;
+    
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+}
+
+.input-login:focus {
+    border: 3px solid #FF0C0C;
+    outline: none;
+}
+
+.divButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#btnRetirar {
+    position: absolute;
+    border-color: #004A99;
+    background-color: #ffffff;
+    border: 5px solid #004A99;
+    border-radius: 50px;
+    color: #004A99;
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    margin-top: 10px;
+    padding: 10px;
+    width: 200px;
+    height: 70px;
+    font-weight: bold;
+    transition-property: border, background-color, color;
+    transition-duration: 0.5s;
+}
+
+#btnRetirar:hover {
+    border: 5px solid #FF0C0C;
+    background-color: #FF0C0C;
+    color: #ffffff;
+}
+
+#imgDM{
+    height: 100px;
+    width: 400px;
+    object-fit: cover;
+
+}
+
+#imgIEG{
+    height: 100px;
+    width: 200px;
+}
