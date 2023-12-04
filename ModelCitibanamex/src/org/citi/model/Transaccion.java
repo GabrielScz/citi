@@ -11,46 +11,35 @@ package org.citi.model;
 public class Transaccion {
     
     private int idTransaccion;
-    private int tipo;
     private int estatus;
     private double monto;
+    private String banco;
     private String fecha;
     private String hora;
     private String codigo;
-    private Banco banco;
     private Cuenta cuenta;
 
     public Transaccion() {
     }
 
-    public Transaccion(int tipo, int estatus, double monto, String fecha, String hora, String codigo, Banco banco, Cuenta cuenta) {
-        this.tipo = tipo;
+    public Transaccion(int estatus, double monto, String banco, String fecha, String hora, String codigo, Cuenta cuenta) {
         this.estatus = estatus;
         this.monto = monto;
+        this.banco = banco;
         this.fecha = fecha;
         this.hora = hora;
         this.codigo = codigo;
-        this.banco = banco;
         this.cuenta = cuenta;
     }
 
-    public Transaccion(int idTransaccion, int tipo, int estatus, double monto, String fecha, String hora, String codigo, Banco banco, Cuenta cuenta) {
+    public Transaccion(int idTransaccion, int estatus, double monto, String banco, String fecha, String hora, String codigo, Cuenta cuenta) {
         this.idTransaccion = idTransaccion;
-        this.tipo = tipo;
         this.estatus = estatus;
         this.monto = monto;
+        this.banco = banco;
         this.fecha = fecha;
         this.hora = hora;
         this.codigo = codigo;
-        this.banco = banco;
-        this.cuenta = cuenta;
-    }
-
-    public Cuenta getCuenta() {
-        return cuenta;
-    }
-
-    public void setCuenta(Cuenta cuenta) {
         this.cuenta = cuenta;
     }
 
@@ -60,14 +49,6 @@ public class Transaccion {
 
     public void setIdTransaccion(int idTransaccion) {
         this.idTransaccion = idTransaccion;
-    }
-
-    public int getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
     }
 
     public int getEstatus() {
@@ -86,6 +67,14 @@ public class Transaccion {
         this.monto = monto;
     }
 
+    public String getBanco() {
+        return banco;
+    }
+
+    public void setBanco(String banco) {
+        this.banco = banco;
+    }
+
     public String getFecha() {
         return fecha;
     }
@@ -102,20 +91,20 @@ public class Transaccion {
         this.hora = hora;
     }
 
-    public Banco getBanco() {
-        return banco;
-    }
-
-    public void setBanco(Banco banco) {
-        this.banco = banco;
-    }
-
     public String getCodigo() {
         return codigo;
     }
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
     }
 
     

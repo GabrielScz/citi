@@ -16,27 +16,24 @@ DELIMITER $$
 CREATE PROCEDURE generarTransaccion (
     
 	/* Datos de Banco */
-	IN    	var_idBanco        		INT,    			--  1
-	IN    	var_nombreBanco		VARCHAR(50),   	--  2
-	IN    	var_fondoDisponible  	DOUBLE,     		--  3
+	IN    	var_idBanco        			INT,    				--  1
+	IN    	var_nombreBanco		VARCHAR(50),   		--  2
+	IN    	var_fondoDisponible  	DOUBLE,     			--  3
     
     /* Datos de Cuenta */
-	IN    	var_idCuenta        		INT,    			--  4
-	IN    	var_noTarjeta			VARCHAR(12),   	--  5
-	IN    	var_nip    				VARCHAR(4),    	--  6
-	IN 	var_montoTotal 		DOUBLE,  		--  7
+	IN    	var_idCuenta        		INT,    				--  4
+	IN 		var_montoTotal 			DOUBLE,  			--  5
                                     
 	/* Datos de Transaccion */
-	IN 	var_tipo 				INT, 				--  8
-	IN 	 var_monto 			DOUBLE,			--  9
-	OUT    var_codigo 			VARCHAR(10),		--  10
-	OUT    var_idTransaccion    	INT          			--  11
+	IN 	 	var_monto 				DOUBLE,			--  6
+	OUT    	var_codigo 				VARCHAR(10),		--  7
+	OUT    	var_idTransaccion    		INT          			--  8
                 )                                    
     BEGIN  
     
-	SET var_codigo = CONCAT('B', SUBSTRING(var_nombreBanco, 1, 4), CONCAT(FLOOR(RAND() * 1000), 'XX'));
-        INSERT INTO transaccion (idCuenta, idBanco, tipo, monto, estatus, fecha, hora, codigo)
-		VALUES( var_idCuenta, var_idBanco, var_tipo, var_monto, 1, CURRENT_DATE(), CURRENT_TIME(), var_codigo);
+	SET var_codigo = CONCAT('B', SUBSTRING(var_nombreBanco, 1, 3), CONCAT(FLOOR(RAND() * 1000), 'XX'));
+        INSERT INTO transaccion (banco, monto, estatus, fecha, hora, codigo)
+		VALUES( var_nombreBanco, var_monto, 1, CURRENT_DATE(), CURRENT_TIME(), var_codigo);
         SET var_idTransaccion = LAST_INSERT_ID();
 
         SET var_montoTotal = ABS(var_montoTotal - var_monto);
@@ -52,24 +49,22 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS generarTransaccionExterna;
 DELIMITER $$
 CREATE PROCEDURE generarTransaccionExterna (
-    
-	/* Datos de Banco */
-	IN    	var_idBanco        		INT,    			--  1
-	
-	/* Datos de Cuenta */
-	IN    	var_idCuenta       		INT,    			--  2
                                     
 	/* Datos de Transaccion */
-	IN 	var_tipo 				INT, 				--  3
-	IN 	var_monto 			DOUBLE,			--  4
-	IN    	var_codigo 			VARCHAR(10),		--  5
-	OUT    var_idTransaccion    	INT          			--  6
+	IN     	var_banco				VARCHAR(45)		--  1
+	IN 		var_monto 				DOUBLE,			--  2
+	IN    	var_codigo 				VARCHAR(10),		--  3
+	IN 		var_fondoDisponible		DOUBLE			--  4
+	OUT   	var_idTransaccion    		INT          			--  5
                 )                                    
     BEGIN  
-    -- insertar una cuenta solo para transaccion externas 
-        INSERT INTO transaccion (idCuenta, idBanco, tipo, monto, estatus, fecha, hora, codigo)
-		VALUES( var_idCuenta, var_idBanco, var_tipo, var_monto, 1, CURRENT_DATE(), CURRENT_TIME(), var_codigo);
+
+        INSERT INTO transaccion (banco, monto, estatus, fecha, hora, codigo)
+		VALUES(var_banco, var_monto, 2, CURRENT_DATE(), CURRENT_TIME(), var_codigo);
         SET var_idTransaccion = LAST_INSERT_ID();
+        
+        SET var_fondoDisponible = ABS(var_fondoDisponible - var_monto);
+        UPDATE banco SET fondoDisponible = var_fondoDisponible WHERE idBanco = 1;
         
     END
 $$

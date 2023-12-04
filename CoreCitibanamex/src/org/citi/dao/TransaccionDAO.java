@@ -22,8 +22,8 @@ import org.citi.model.Cuenta;
 public class TransaccionDAO {
     
     public String generarTransaccion(Transaccion t) throws Exception {
-
-        String query = "{CALL generarTransaccion(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        
+        String query = "{CALL generarTransaccion(?, ?, ?, ?, ?, ?, ?, ?)}";
 
         int idTransaccionG = 0;
         String codigoG = "";
@@ -33,25 +33,22 @@ public class TransaccionDAO {
 
         CallableStatement cstmt = conn.prepareCall(query);
 
-        cstmt.setInt(1, t.getBanco().getIdBanco());
-        cstmt.setString(2, t.getBanco().getNombreBanco());
-        cstmt.setDouble(3, t.getBanco().getFondoDisponible());
+        cstmt.setInt(1, t.getCuenta().getBanco().getIdBanco());
+        cstmt.setString(2, t.getCuenta().getBanco().getNombreBanco());
+        cstmt.setDouble(3, t.getCuenta().getBanco().getFondoDisponible());
         
         cstmt.setInt(4, t.getCuenta().getIdCuenta());
-        cstmt.setString(5, t.getCuenta().getNoTarjeta());
-        cstmt.setString(6, t.getCuenta().getNip());
-        cstmt.setDouble(7, t.getCuenta().getMontoTotal());
+        cstmt.setDouble(5, t.getCuenta().getMontoTotal());
 
-        cstmt.setInt(8, t.getTipo());
-        cstmt.setDouble(9, t.getMonto());
+        cstmt.setDouble(6, t.getMonto());
 
-        cstmt.registerOutParameter(10, Types.VARCHAR);
-        cstmt.registerOutParameter(11, Types.INTEGER);
+        cstmt.registerOutParameter(7, Types.VARCHAR);
+        cstmt.registerOutParameter(8, Types.INTEGER);
 
         cstmt.executeUpdate();
 
-        codigoG = cstmt.getString(10);
-        idTransaccionG = cstmt.getInt(11);
+        codigoG = cstmt.getString(7);
+        idTransaccionG = cstmt.getInt(8);
 
         t.setIdTransaccion(idTransaccionG);
         t.setCodigo(codigoG);
@@ -74,14 +71,11 @@ public class TransaccionDAO {
 
         CallableStatement cstmt = conn.prepareCall(query);
 
-        cstmt.setInt(1, t.getBanco().getIdBanco());
-        
-        cstmt.setInt(2, t.getCuenta().getIdCuenta());
-
-        cstmt.setInt(3, t.getTipo());
-        cstmt.setDouble(4, t.getMonto());
-        cstmt.setString(5, t.getCodigo());
-        cstmt.registerOutParameter(6, Types.INTEGER);
+        cstmt.setString(1, t.getBanco());
+        cstmt.setDouble(2, t.getMonto());
+        cstmt.setString(3, t.getCodigo());
+        cstmt.setDouble(4, t.getCuenta().getBanco().getFondoDisponible());
+        cstmt.registerOutParameter(5, Types.INTEGER);
 
         cstmt.executeUpdate();
 
@@ -132,20 +126,21 @@ public class TransaccionDAO {
         
         b.setIdBanco(rs.getInt("idBanco"));
         b.setNombreBanco(rs.getString("nombreBanco"));
-        b.setFondoDisponible(rs.getInt("fondoDisponible"));
+        b.setFondoDisponible(rs.getDouble("montoDisponible"));
         
+        c.setBanco(b);
         c.setIdCuenta(rs.getInt("idCuenta"));
         c.setMontoTotal(rs.getDouble("montoTotal"));
         c.setNoTarjeta(rs.getString("noTarjeta"));
+        c.setNip(rs.getString("nip"));
         
-        t.setBanco(b);
         t.setCuenta(c);
         t.setIdTransaccion(rs.getInt("idTransaccion"));
+        t.setBanco(rs.getString("banco"));
         t.setEstatus(rs.getInt("estatus"));
         t.setFecha(rs.getString("fecha"));
         t.setHora(rs.getString("hora"));
         t.setMonto(rs.getDouble("monto"));
-        t.setTipo(rs.getInt("tipo"));
         t.setCodigo(rs.getString("codigo"));
         
         return t;

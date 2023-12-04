@@ -53,8 +53,6 @@ public class TransaccionAppService {
         
        try {
            
-           c = cDao.obtenerCuenta(t.getCuenta().getNoTarjeta(), t.getCuenta().getNip()) == null ? cu: cDao.obtenerCuenta(t.getCuenta().getNoTarjeta(), t.getCuenta().getNip());
-           t.setCuenta(c == null ? cu: c);
            tCQRS.generarTransaccionExterno(t);
            
        } catch(Exception e) {

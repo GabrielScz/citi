@@ -30,17 +30,14 @@ CREATE TABLE transaccion (
 
 idTransaccion INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
 idCuenta INT NOT NULL,
-idBanco INT NOT NULL,
+banco VARCHAR(45) NOT NULL,
 codigo VARCHAR(10) NOT NULL,
-tipo INT NOT NULL, -- 1: Retiro, 2: Deposito.
 monto DOUBLE NOT NULL,
 estatus INT NOT NULL, -- 0: Error, 1: Exitosa, 2: Pendiente (estatus en caso de ser otro banco).
 fecha DATE NOT NULL,
 hora TIME NOT NULL,
 
 CONSTRAINT fk_cuenta FOREIGN KEY (idCuenta) 
-	REFERENCES cuenta(idCuenta),
-CONSTRAINT fk_idbanco FOREIGN KEY (idBanco) 
-	REFERENCES banco(idBanco)
+	REFERENCES cuenta(idCuenta)
 
 );

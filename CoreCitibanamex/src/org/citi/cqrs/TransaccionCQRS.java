@@ -17,40 +17,6 @@ import org.citi.model.Transaccion;
  */
 public class TransaccionCQRS {
 
-//    public String generarTransaccion(Transaccion t) throws SQLException, Exception {
-//
-//        TransaccionDAO tDao = new TransaccionDAO();
-//        CuentaDAO cDao = new CuentaDAO();
-//
-//        try {
-//
-//            if (t.getCuenta().getNoTarjeta() != "" && t.getCuenta().getNip() != "") {
-//
-//                if (t.getCuenta().getNoTarjeta() != t.getCuenta().getNoTarjeta() && t.getCuenta().getNip() != t.getCuenta().getNip()) {
-//
-//                    if (t.getMonto() <= t.getCuenta().getBanco().getFondoDisponible()) {
-//
-//                        if (t.getMonto() <= t.getCuenta().getMontoTotal()) {
-//                            tDao.generarTransaccion(t);
-//                        } else {
-//                            throw new RuntimeException("Tu cuenta no tiene fondos suficientes!");
-//                        }
-//                    } else {
-//                        throw new RuntimeException("El cajero no cuenta con fondos suficientes!");
-//                    }
-//                } else {
-//                    throw new RuntimeException("Tarjeta o NIP incorrectos!");
-//                }
-//            } else {
-//                throw new RuntimeException("Campos vacios!");
-//            }
-//        } catch (Exception e) {
-//            System.out.println("e: " + e);
-//            throw e;
-//        }
-//        return t.getCodigo();
-//    }
-
     public String generarTransaccion(Transaccion t) throws SQLException {
 
         TransaccionDAO tDao = new TransaccionDAO();
@@ -59,6 +25,8 @@ public class TransaccionCQRS {
         try {
 
             if (t.getCuenta().getNoTarjeta() != "" && t.getCuenta().getNip() != "") {
+                
+                if (t.getCuenta().getNoTarjeta() != t.getCuenta().getNoTarjeta() && t.getCuenta().getNip() != t.getCuenta().getNip()) {
 
                 if (t.getMonto() <= t.getCuenta().getBanco().getFondoDisponible()) {
 
@@ -67,21 +35,17 @@ public class TransaccionCQRS {
                        return tDao.generarTransaccion(t);
 
                     } else {
-
                         throw new RuntimeException("Tu cuenta no tiene fondos suficientes!");
                     }
-
                 } else {
-
                     throw new RuntimeException("El cajero no cuenta con fondos suficientes!");
                 }
-
             } else {
-
-                throw new RuntimeException("Tarjeta o NIP incorrectos!");
-
+                    throw new RuntimeException("Tarjeta o NIP incorrectos!");
+                }
+            } else {
+                throw new RuntimeException("Campos vacios!");
             }
-
         } catch (Exception e) {
 
             System.out.println("e: " + e);
@@ -109,6 +73,7 @@ public class TransaccionCQRS {
         } catch (Exception e) {
 
             System.out.println("e: " + e);
+            throw new RuntimeException("Error: " + e);
 
         }
 

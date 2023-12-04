@@ -17,9 +17,6 @@ function generarTransaccion() {
         nombreBanco = "AZTECA";
     }
 
-    let banco = new Object();
-    banco.idBanco = idBanco;
-    banco.nombreBanco = nombreBanco;
 
     let cuenta = new Object();
     cuenta.noTarjeta = document.getElementById("txtNoTarjeta").value;
@@ -27,9 +24,7 @@ function generarTransaccion() {
 
     let transaccion = new Object();
     transaccion.monto = document.getElementById("txtMonto").value;
-    transaccion.tipo = tipo;
-    transaccion.estatus = 1;
-    transaccion.banco = banco;
+    transaccion.banco = nombreBanco;
     transaccion.cuenta = cuenta;
 
     let parametros = new URLSearchParams({datos: JSON.stringify(transaccion)});
@@ -185,29 +180,18 @@ function generarTransaccionAzteca() {
 function generarTransaccionExterna(codigo) {
 
     let idBanco = document.getElementById("txtBanco").value;
-    let tipo = 0;
+    let nombreBanco = "";
 
-    if (idBanco === "1") {
-        tipo = 1;
-    } else if (idBanco === "2") {
-        tipo = 2;
+    if (idBanco === "2") {
+        nombreBanco = "NUMEXICO";
     } else if (idBanco === "3") {
-        tipo = 2;
+        nombreBanco = "AZTECABANCO";
     }
-
-    let banco = new Object();
-    banco.idBanco = idBanco;
-
-    let cuenta = new Object();
-    cuenta.idCuenta = 2;
 
     let transaccion = new Object();
     transaccion.monto = document.getElementById("txtMonto").value;
-    transaccion.tipo = tipo;
-    transaccion.banco = banco;
-    transaccion.cuenta = cuenta;
+    transaccion.banco = nombreBanco;
     transaccion.codigo = codigo;
-
 
     let parametros = new URLSearchParams({datos: JSON.stringify(transaccion)});
     console.log(parametros);
