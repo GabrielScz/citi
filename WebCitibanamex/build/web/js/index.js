@@ -42,7 +42,7 @@ function generarTransaccion() {
         icon: 'question',
         showCancelButton: true,
         showConfirmButton: true,
-        confirmButtonText: 'Generar',
+        confirmButtonText: 'Confirmar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -75,7 +75,7 @@ function generarTransaccion() {
                             timerProgressBar: true,
                             icon: 'success',
                             title: '¡Se generó correctamente!',
-                            text: response.data
+                            text: response.data.codigo
                         });
                     }
                 });
@@ -182,6 +182,68 @@ function generarTransaccionAzteca() {
     });
 }
 
+function generarTransaccionExterna(codigo) {
+
+    let idBanco = document.getElementById("txtBanco").value;
+    let tipo = 0;
+
+    if (idBanco === "1") {
+        tipo = 1;
+    } else if (idBanco === "2") {
+        tipo = 2;
+    } else if (idBanco === "3") {
+        tipo = 2;
+    }
+
+    let banco = new Object();
+    banco.idBanco = idBanco;
+
+    let cuenta = new Object();
+    cuenta.idCuenta = 2;
+
+    let transaccion = new Object();
+    transaccion.monto = document.getElementById("txtMonto").value;
+    transaccion.tipo = tipo;
+    transaccion.banco = banco;
+    transaccion.cuenta = cuenta;
+    transaccion.codigo = codigo;
+
+
+    let parametros = new URLSearchParams({datos: JSON.stringify(transaccion)});
+    console.log(parametros);
+
+
+    fetch('api/transaccion/generarTransaccionExterno',
+            {
+                method: 'POST',
+                body: parametros,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(function (data) {
+                if (data.exception != null) {
+                    Swal.fire('Error', 'Error interno del servidor!', 'error');
+                }
+                if (data.error != null) {
+                    Swal.fire('', data.error, 'warning');
+
+                    return;
+                } else {
+                    Swal.fire({
+                        title: '¿Desea realizar la transacción?',
+                        icon: 'question',
+                        showConfirmButton: true,
+                        confirmButtonText: 'Realizar'
+                    }).then((result) => {
+                        console.log("hecho");
+                    });
+                }
+            });
+
+}
+
 function generarFechaAcual() {
     var fecha = new Date();
 
@@ -227,73 +289,4 @@ function generarHoraActual() {
     var horaFormateada = horas + ':' + minutos + ':' + segundos;
 
     return horaFormateada;
-}
-
-function generarTransaccionExterna(codigo) {
-
-    let idBanco = document.getElementById("txtBanco").value;
-    let tipo = 0;
-    let nombreBanco = "";
-
-    if (idBanco === "1") {
-        tipo = 1;
-        nombreBanco = "CITIBANAMEX";
-    } else if (idBanco === "2") {
-        tipo = 2;
-        nombreBanco = "NUMEXICO";
-    } else if (idBanco === "3") {
-        tipo = 2;
-        nombreBanco = "AZTECA";
-    }
-
-    let banco = new Object();
-    banco.idBanco = idBanco;
-    banco.nombreBanco = nombreBanco;
-
-    let cuenta = new Object();
-    cuenta.noTarjeta = document.getElementById("txtNoTarjeta").value;
-    cuenta.nip = document.getElementById("txtNIP").value;
-
-    let transaccion = new Object();
-    transaccion.monto = document.getElementById("txtMonto").value;
-    transaccion.tipo = tipo;
-    transaccion.estatus = 1;
-    transaccion.banco = banco;
-    transaccion.cuenta = cuenta;
-    transaccion.codigo = codigo;
-
-
-    let parametros = new URLSearchParams({datos: JSON.stringify(transaccion)});
-    console.log(parametros);
-
-
-    fetch('api/transaccion/generarTransaccionExterno',
-            {
-                method: 'POST',
-                body: parametros,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
-            })
-            .then(response => {
-                return response.json();
-            })
-            .then(function (data) {
-                if (data.exception != null) {
-                    Swal.fire('Error', 'Error interno del servidor!', 'error');
-                }
-                if (data.error != null) {
-                    Swal.fire('', data.error, 'warning');
-
-                    return;
-                } else {
-                    Swal.fire({
-                        title: '¿Desea realizar la transacción?',
-                        icon: 'question',
-                        showConfirmButton: true,
-                        confirmButtonText: 'Realizar'
-                    }).then((result) => {
-                        console.log("hecho");
-                    });
-                }
-            });
-
 }

@@ -39,7 +39,7 @@ public class TransaccionREST {
         try {
             t = gson.fromJson(datos, Transaccion.class);
             if (tController.generarTransaccion(t)) {
-                out = gson.toJson(t);
+                out = gson.toJson(t.getCodigo());
             } else {
                 out = """
                        {"result": "No se pudo realizar esta transaccion!"}
@@ -48,8 +48,9 @@ public class TransaccionREST {
         } catch (Exception ex) {
             ex.printStackTrace();
             out = """
-                     {"result": "error"}
+                     {"exception": "%s"}
                      """;
+            out = String.format(out, ex.toString());
         }
 
         return Response.status(Response.Status.OK).entity(out).build();
@@ -77,8 +78,9 @@ public class TransaccionREST {
         } catch (Exception ex) {
             ex.printStackTrace();
             out = """
-                     {"result": "error"}
+                     {"exception": "%s"}
                      """;
+            out = String.format(out, ex.toString());
         }
 
         return Response.status(Response.Status.OK).entity(out).build();

@@ -30,7 +30,8 @@ public class TransaccionAppService {
            
            c = cDao.obtenerCuenta(t.getCuenta().getNoTarjeta(), t.getCuenta().getNip()) == null ? cu: cDao.obtenerCuenta(t.getCuenta().getNoTarjeta(), t.getCuenta().getNip());
            t.setCuenta(c == null ? cu: c);
-           tCQRS.generarTransaccion(t);
+           t.setCodigo(tCQRS.generarTransaccion(t));
+           
            
        } catch(Exception e) {
            System.out.println("e: " + e);
